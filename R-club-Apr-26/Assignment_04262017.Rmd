@@ -4,40 +4,50 @@ author: "Seungmo Kim"
 date: "4/23/2017"
 output: 
   html_document: 
-    keep_md: yes
+    keep_md: 
 ---
 
-
-install.packages("tidyverse")
+```{r eval=FALSE}
 library(tidyverse)
-
 mpg
+```
+\
+
 
 #### 3.2.4 Exercises
+\
+
 
 ##### 1. Run ggplot(data = mpg) what do you see?
-```{r}
-# ggplot(data = mpg)
+```{r eval=FALSE}
+ggplot(data = mpg)
 ```
-##### I don't get any plot.  I must specify the value of each axis and the type of plot.
+###### I don't get any plot.  I must specify the value of each axis and the type of plot.
+\
+
 
 ##### 2. How many rows are in mtcars? How many columns?
 ```{r }
 nrow(mtcars)
 ncol(mtcars)
 ```
+\
+
 
 ##### 3. What does the drv variable describe? Read the help for ?mpg to find out.
-```{r}
+```{r eval=FALSE}
 ?mpg
 ```
-##### The drv variable describes the kind of driving system - f=front-wheel drive, r=rear wheel drive and 4=4 wheel drive.
+###### The drv variable describes the kind of driving system - f=front-wheel drive, r=rear wheel drive and 4=4 wheel drive.
 
-##### 4. Make a scatterplot of hwy vs cyl.
-```{r}
+#### 4. Make a scatterplot of hwy vs cyl.
+```{r 67}
+library(ggplot2)
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = cyl, y = hwy))
 ```
+\
+
 
 ##### 5. What happens if you make a scatterplot of class vs drv. Why is the plot not useful?
 ```{r}
@@ -73,7 +83,7 @@ ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, size=cty))
 ```
 ##### Continuous variables can be mapped to color and size on scaled gradient but not to shape.
 ```{r}
-ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, shape=cty))
+## ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, shape=cty))
 ```
 
 ##### 4. What happens if you map the same variable to multiple aesthetics?
@@ -116,7 +126,7 @@ ggplot(data = mpg) +
 ```
 ##### The empty cells means no data(observation) corresponding to variables indicated as facets. 
 
-# 3. What plots does the following code make? What does . do?
+##### 3. What plots does the following code make? What does . do?
 ```{r}
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
@@ -134,16 +144,14 @@ ggplot(data = mpg) +
   geom_point(mapping = aes(x = displ, y = hwy)) + 
   facet_wrap(~ class, nrow = 2)
 ```
-#### What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
-```
-Using facet instead of color aesthetic to visualize the data can make trends within a variable more clear, but hide overarching trends in the entire data set. In a loarger data set it might be more benficial to facet the data to analyze trends in individual variables, and less important to use the color aesthetic to see overarching trends.
-
+##### What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?
+##### Using faceting instead of the colour aesthetic helps us visualize the large data set 'more clear within a variable of interest'. However, it may not gives us a clear overal trends in the entire data set.
 
 ##### 5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol variables?
-nrow and ncol define the number of rows or colums, and the direction, by hwich the data is faceted. as.table can also be used to change the layout of panels. In facet_grid(), nrow and ncol are defined by the variables used to define facets, with "." indicating one row or column.
+
+###### Arguments nrow and ncol set the number of rows and colums. Using strip.position it is possible to place the labels on either of the four sides by setting strip.position = c("top", "bottom", "left", "right").  
+###### In facet_grid(), nrow and ncol can't be set but facets can be located in row or colum by putting '.'.
 
 ##### 6. When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
-# facet_grid forms a matrix of panels defined by row and column facetting variables. It is most useful when we have two discrete variables, and all combinations of the variables exist in the data.
-Puting the variable with the most unique number of levels in the rows can result in an oddly shaped figured.
-Contact GitHub API Training Shop Blog About
-© 2017 GitHub, Inc. Terms Privacy Security Status Help
+###### facet_grid forms a matrix of panels defined by row and colum or n facetting variables. If we put the variable with more unique levels in the rows, an obscure(?) feature may be returned. These rule is apllied to most graph or table. 
+
