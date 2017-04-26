@@ -13,9 +13,7 @@ mpg
 ```
 
 
-
 ### 3.2.4 Exercises
-
 
 
 #### 1. Run ggplot(data = mpg) what do you see?
@@ -31,6 +29,7 @@ nrow(mtcars)
 ncol(mtcars)
 ```
 number of rows: 32   number of caolumn: 11
+
 
 #### 3. What does the drv variable describe? Read the help for ?mpg to find out.
 ```{r eval=FALSE}
@@ -56,7 +55,6 @@ Both variables are categorical.  In that case, a table is more informative than 
 
 
 ### 3.3.1 Exercises
-
 
 
 #### 1. What’s gone wrong with this code? Why are the points not blue?
@@ -100,7 +98,6 @@ ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=class, size=class))
 plotted on both aesthetics
 
 
-
 #### 5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
 ```{r}
 ggplot(data = mpg) + 
@@ -125,7 +122,6 @@ ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=displ))
 
 
 ### 3.5.1 Exercises
-
 
 
 #### 1. What happens if you facet on a continuous variable?
@@ -175,6 +171,7 @@ Using faceting instead of the colour aesthetic helps us visualize the large data
 #### 5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol variables?
 
 The arguments nrow and ncol set the number of rows and columns. We can place a label on one of the four sides by setting strip.position = c ("top", "bottom", "left", "right"). In facet_grid (), nrow and ncol can not be set, but facets can be placed in rows or columns by inserting '.'.
+
 
 #### 6. When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
 
