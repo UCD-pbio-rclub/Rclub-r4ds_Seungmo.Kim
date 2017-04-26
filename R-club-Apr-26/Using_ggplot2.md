@@ -1,18 +1,9 @@
----
-title: "Using ggplot2"
-author: "Seungmo Kim"
-date: "4/25/2017"
-output:
-  html_document:
-    keep_md: true
----
+# Using ggplot2
+Seungmo Kim  
+4/25/2017  
 
 
-```{r include=FALSE, error=FALSE, message=FALSE}
-library(tidyverse)
-library(ggplot2)
-mpg
-```
+
 \
 
 
@@ -22,7 +13,8 @@ mpg
 
 
 #### 1. Run ggplot(data = mpg) what do you see?
-```{r eval=FALSE}
+
+```r
 ggplot(data = mpg)
 ```
 A plot is not generated. The value of each axis and the type of plot should be specified.
@@ -31,9 +23,21 @@ A plot is not generated. The value of each axis and the type of plot should be s
 
 
 #### 2. How many rows are in mtcars? How many columns?
-```{r }
+
+```r
 nrow(mtcars)
+```
+
+```
+## [1] 32
+```
+
+```r
 ncol(mtcars)
+```
+
+```
+## [1] 11
 ```
 number of rows: 32 &nbsp;&nbsp;number of column: 11
 
@@ -41,7 +45,8 @@ number of rows: 32 &nbsp;&nbsp;number of column: 11
 
 
 #### 3. What does the drv variable describe? Read the help for ?mpg to find out.
-```{r eval=FALSE}
+
+```r
 ?mpg
 ```
 
@@ -51,19 +56,25 @@ The drv variable describes driving system: f=front-wheel drive, r=rear wheel dri
 
 
 #### 4. Make a scatterplot of hwy vs cyl.
-```{r }
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = cyl, y = hwy))
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-5-1.png)<!-- -->
 
 \
 
 
 #### 5. What happens if you make a scatterplot of class vs drv. Why is the plot not useful?
-```{r}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = drv, y = class))
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
 
 Both variables are categorical. In this case, table may be more informative than graph.
 
@@ -76,23 +87,28 @@ Both variables are categorical. In this case, table may be more informative than
 
 
 #### 1. What’s gone wrong with this code? Why are the points not blue?
-```{r eval=FALSE}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
 ```
 
 The aesthetic color should be outside of the aesthetic parenthesis to change the color of the points.
 
-```{r}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy), color = "blue")
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
 
 \
 
 
 #### 2. Which variables in mpg are categorical? Which variables are continuous? (Hint: type ?mpg to read the documentation for the dataset). How can you see this information when you run mpg?
-```{r eval=FALSE}
+
+```r
 summary(mpg)
 ```
 
@@ -103,14 +119,16 @@ Continuous (vs. discrete) : displ, year, cly, cty and hwy
 
 
 #### 3. Map a continuous variable to color, size, and shape. How do these aesthetics behave differently for categorical vs. continuous variables?
-```{r eval=FALSE}
+
+```r
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=cty))
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, size=cty))
 ```
 
 Continuous variables can be mapped to color and size on scaled gradient but not to shape.
 
-```{r eval=FALSE}
+
+```r
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, shape=cty))
 ```
 
@@ -118,9 +136,12 @@ ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, shape=cty))
 
 
 #### 4. What happens if you map the same variable to multiple aesthetics?
-```{r warning=FALSE}
+
+```r
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=class, size=class))
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
 
 plotted on both aesthetics
 
@@ -128,12 +149,20 @@ plotted on both aesthetics
 
 
 #### 5. What does the stroke aesthetic do? What shapes does it work with? (Hint: use ?geom_point)
-```{r}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = cyl, y = hwy, stroke = 1))
+```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-13-1.png)<!-- -->
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = cyl, y = hwy, stroke = 5))
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 
 The aesthetic stroke adjusts the size of the points in geom_point. 
 
@@ -141,12 +170,16 @@ The aesthetic stroke adjusts the size of the points in geom_point.
 
 
 #### 6. What happens if you map an aesthetic to something other than a variable name, like aes(colour = displ < 5)?
-```{r}
+
+```r
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=displ < 5))
 ```
 
+![](Using_ggplot2_files/figure-html/unnamed-chunk-14-1.png)<!-- -->
+
 color=displ < 5: The color varies depending on whether the value meets the given condition.
-```{r eval=FALSE}
+
+```r
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=displ))
 ```
 
@@ -159,11 +192,14 @@ ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=displ))
 
 
 #### 1. What happens if you facet on a continuous variable?
-```{r}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) + 
   facet_grid(~cty)
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 Too many facets may be generated and panels are difficult to compare.
 
@@ -171,7 +207,8 @@ Too many facets may be generated and panels are difficult to compare.
 
 
 #### 2. What do the empty cells in plot with facet_grid(drv ~ cyl) mean? How do they relate to this plot?
-```{r eval=FALSE}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = drv, y = cyl))
 ```
@@ -182,15 +219,22 @@ An empty cell means that there is no data (observation) corresponding to the var
 
 
 #### 3. What plots does the following code make? What does . do?
-```{r}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
   facet_grid(drv ~ .)
+```
 
+![](Using_ggplot2_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) +
   facet_grid(. ~ cyl)
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-18-2.png)<!-- -->
 
 **facet_grid(drv ~ .)** facets data by kind of driving system _vertically_ while **facet_grid(. ~ cyl)** facets data by number of cylinders _horizontally_. Horizontal and verical placement of the facet may be chosen by the arranged format of data.
 
@@ -198,11 +242,14 @@ ggplot(data = mpg) +
 
 
 #### 4. Take the first faceted plot in this section:
-```{r}
+
+```r
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy)) + 
   facet_wrap(~ class, nrow = 2)
 ```
+
+![](Using_ggplot2_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 #### What are the advantages to using faceting instead of the colour aesthetic? What are the disadvantages? How might the balance change if you had a larger dataset?  
 
