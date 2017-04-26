@@ -6,20 +6,23 @@ output: html_document
 ---
 
 
-```{r eval=FALSE}
+```{r include=FALSE}
 library(tidyverse)
+library(ggplot2)
 mpg
 ```
 
 
+
 ### 3.2.4 Exercises
+
 
 
 #### 1. Run ggplot(data = mpg) what do you see?
 ```{r eval=FALSE}
 ggplot(data = mpg)
 ```
-I don't get any plot.  I must specify the value of each axis and the type of plot.
+A plot is not generated. The value of each axis and the type of plot should be specified.
 
 
 #### 2. How many rows are in mtcars? How many columns?
@@ -27,18 +30,13 @@ I don't get any plot.  I must specify the value of each axis and the type of plo
 nrow(mtcars)
 ncol(mtcars)
 ```
-
+number of rows: 32   number of caolumn: 11
 
 #### 3. What does the drv variable describe? Read the help for ?mpg to find out.
 ```{r eval=FALSE}
 ?mpg
 ```
 The drv variable describes driving system: f=front-wheel drive, r=rear wheel drive and 4=4 wheel drive.
-
-
-```{r include=FALSE}
-library(ggplot2)
-```
 
 
 #### 4. Make a scatterplot of hwy vs cyl.
@@ -57,8 +55,8 @@ ggplot(data = mpg) +
 Both variables are categorical.  In that case, a table is more informative than graph.
 
 
-
 ### 3.3.1 Exercises
+
 
 
 #### 1. What’s gone wrong with this code? Why are the points not blue?
@@ -66,7 +64,7 @@ Both variables are categorical.  In that case, a table is more informative than 
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy, color = "blue"))
 ```
-The aesthetic color should be outside of the aesthetic parenthesis, to change the color of the points.
+The aesthetic color should be outside of the aesthetic parenthesis to change the color of the points.
 
 ```{r}
 ggplot(data = mpg) + 
@@ -78,7 +76,7 @@ ggplot(data = mpg) +
 ```{r eval=FALSE}
 summary(mpg)
 ```
-Categorical variables: manufacturer, model, trans, drv, fl and class 
+Categorical variables: manufacturer, model, trans, drv, fl and class\
 Continuous (vs. discrete) : displ, year, cly, cty and hwy
 
 
@@ -119,13 +117,15 @@ The aesthetic stroke adjusts the size of the points in geom_point.
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=displ < 5))
 ```
 
-color=displ < 5: the color shows if the value satisfies the given condition. 
+color=displ < 5: The color varies depending on whether the value meets the given condition.
 ```{r eval=FALSE}
 ggplot(mpg) + geom_point(mapping=aes(x=cyl, y=hwy, color=displ))
 ```
 
 
+
 ### 3.5.1 Exercises
+
 
 
 #### 1. What happens if you facet on a continuous variable?
@@ -143,7 +143,7 @@ Too many facets may be generated and panels are difficult to compare.
 ggplot(data = mpg) + 
   geom_point(mapping = aes(x = drv, y = cyl))
 ```
-The empty cells means no data(observation) corresponding to variables indicated as facets. 
+An empty cell means that there is no data (observation) corresponding to the variable represented by the facet.
 
 
 #### 3. What plots does the following code make? What does . do?
@@ -174,10 +174,9 @@ Using faceting instead of the colour aesthetic helps us visualize the large data
 
 #### 5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol variables?
 
-Arguments nrow and ncol set the number of rows and colums. Using strip.position it is possible to place the labels on either of the four sides by setting strip.position = c("top", "bottom", "left", "right"). In facet_grid(), nrow and ncol can't be set but facets can be located in row or colum by putting '.'.
-
+The arguments nrow and ncol set the number of rows and columns. We can place a label on one of the four sides by setting strip.position = c ("top", "bottom", "left", "right"). In facet_grid (), nrow and ncol can not be set, but facets can be placed in rows or columns by inserting '.'.
 
 #### 6. When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
 
-facet_grid forms a matrix of panels defined by row and colum or n facetting variables. If we put the variable with more unique levels in the rows, an obscure(?) feature may be returned. These rule is apllied to most graph or table. 
+Facet_grid forms a matrix of panels defined by row and column or facet variable. If we put a variable with a unique level in the row, an ambiguous (?) feature may be returned. This rule applies to most graphs or tables.
 
