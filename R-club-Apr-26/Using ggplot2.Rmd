@@ -31,10 +31,7 @@ nrow(mtcars)
 ncol(mtcars)
 ```
 number of rows: 32   number of caolumn: 11
-<<<<<<< HEAD
 
-=======
->>>>>>> f94f759418b5517dbf878892078466c7ed76d4a6
 
 #### 3. What does the drv variable describe? Read the help for ?mpg to find out.
 ```{r eval=FALSE}
@@ -178,10 +175,7 @@ Using faceting instead of the colour aesthetic helps us visualize the large data
 #### 5. Read ?facet_wrap. What does nrow do? What does ncol do? What other options control the layout of the individual panels? Why doesn’t facet_grid() have nrow and ncol variables?
 
 The arguments nrow and ncol set the number of rows and columns. We can place a label on one of the four sides by setting strip.position = c ("top", "bottom", "left", "right"). In facet_grid (), nrow and ncol can not be set, but facets can be placed in rows or columns by inserting '.'.
-<<<<<<< HEAD
 
-=======
->>>>>>> f94f759418b5517dbf878892078466c7ed76d4a6
 
 #### 6. When using facet_grid() you should usually put the variable with more unique levels in the columns. Why?
 
