@@ -1,4 +1,6 @@
 # Assignment_Kim.Seungmo_05032017
+null  
+null  
 
 
 ### 3.6.1 Exercises
@@ -173,6 +175,7 @@ ggplot(data = diamonds, aes(x = cut, y = depth)) +
 ```
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-6-1.png)<!-- -->
+
 2. What does geom_col() do? How is it different to geom_bar()?
 
 ```r
@@ -206,7 +209,7 @@ na.rm
 show.legend	
 geom	
 n, number of points to evaluate smoother at
-span, controls the amount of smoothing for the default loess smoother. Smaller numbers produce wigglier lines, larger numbers produce smoother lines.
+span, controls the amount of smoothing for the default loess smoother. 
 fullrange	
 level, level of confidence interval to use (0.95 by default)
 
@@ -227,12 +230,20 @@ ggplot(data = diamonds) +
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
 
+
 ```r
 ggplot(data = diamonds) + 
-  geom_bar(mapping = aes(x = cut, y = ..prop.., group = 1))
+  geom_bar(aes(x = cut, y = ..prop.., group = 1))
 ```
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+
+```r
+ggplot(data = diamonds) + 
+  geom_bar(aes(x = cut, fill=color, y = ..prop.., group = 1))
+```
+
+![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-9-2.png)<!-- -->
 
   
 
@@ -359,9 +370,7 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 
 
 ```r
-# ensures that the ranges of axes are equal to the specified ratio by
 # adjusting the plot aspect ratio
-
 p <- ggplot(mtcars, aes(mpg, wt)) + geom_point()
 p + coord_fixed(ratio = 1)
 ```
@@ -379,8 +388,4 @@ p + coord_fixed(ratio = 1/5)
 ```
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-18-3.png)<!-- -->
-
-```r
-# Resize the plot to see that the specified aspect ratio is maintained
-```
 
