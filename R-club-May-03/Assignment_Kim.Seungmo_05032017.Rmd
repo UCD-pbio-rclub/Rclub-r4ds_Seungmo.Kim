@@ -14,7 +14,8 @@ library(mapproj)
 ```
 ### 3.6.1 Exercises
 
-1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+**1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?**
+
 ```{r}
 p <- ggplot(data = mpg, aes(x = displ, y = hwy))
 p + geom_line()
@@ -23,9 +24,9 @@ p + geom_area()
 q <- ggplot(data = mpg, mapping = aes(x = displ))
 q + geom_histogram()
 ```
-
-2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
-
+    
+**2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.** 
+  
 A scatter plot with a line with smooth shape. It is a plot of hwy on displ colored by drv.
 ```{r}
 ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) + 
@@ -33,14 +34,14 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
   geom_smooth(se = FALSE)
 ```
 
-3.What does show.legend = FALSE do? What happens if you remove it?
+  
+**3.What does show.legend = FALSE do? What happens if you remove it?**  
+show.legend = FALSE removes the legend not to show unnecessary data in a plot. If it is removed, the regend will be show up.  
+  
+  4.What does the se argument to geom_smooth() do?  
+    
+    geom_smooth(se=TRUE) adds a confidence interval around the line.  
 
-show.legend = FALSE removes the legend not to show unnecessary data in a plot. If it is removed, the regend will be show up.
-
-
-4.What does the se argument to geom_smooth() do?
-
-geom_smooth(se=TRUE) adds a confidence interval around the line.
 
 
 5.Will these two graphs look different? Why/why not?
@@ -99,11 +100,12 @@ ggplot(data = diamonds) +
   geom_col(mapping = aes(x = cut, y = 1))
 ```
 for bar charts 
-1) geom_bar: makes the height of the bars proportional to the number of cases in each group, using stat_count by default(counts the number of cases at each x position)
-2) geom_col: makes the heights of the bars to represent values in the data, using stat_identity(leaves the data as is)
+geom_bar: makes the height of the bars proportional to the number of cases in each group, using stat_count by default(counts the number of cases at each x position)
+geom_col: makes the heights of the bars to represent values in the data, using stat_identity(leaves the data as is)
 
 
 3. Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?
+
 
 4. What variables does stat_smooth() compute? What parameters control its behaviour?
 
@@ -135,11 +137,13 @@ ggplot(data = diamonds) +
 
 ggplot(data = diamonds) + 
   geom_bar(aes(x = cut, fill=color, y = ..prop.., group = 1))
+
 ```
 
   
 
 ### 3.8.1 Exercises
+
 
 1. What is the problem with this plot? How could you improve it?
 ```{r}
@@ -151,15 +155,18 @@ ggplot(data = mpg, aes(x = cty, y = hwy)) +
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
   geom_point(position="jitter")
 ```
-geom_jitter () spreads the points out to prevent overplotting.  Overplotting is when one or more points are in the same place (or close enough to the same place).
-Adding randomness improves the plot, especially on large scales rather than small scales.
+
+geom_jitter () spreads the points out to prevent overplotting.  Overplotting is when one or more points are in the same place (or close enough to the same place). Adding randomness improves the plot, especially on large scales rather than small scales.
+ 
  
 2. What parameters to geom_jitter() control the amount of jittering?
 ```{r}
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
   geom_jitter(size=1.5)
 ```
+
 width and height
+
 
 3. Compare and contrast geom_jitter() with geom_count().
 ```{r}
@@ -167,9 +174,10 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
   geom_jitter()
 
 ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) + 
-  geom_count()
+  geom_count(alpha=.5)
 ```
 Both are used to help avoid overplotting. geom_jitter() in continuous X & continuous Y and geom_count() in discrete X and discrete Y. 
+
 
 4. What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.
 
@@ -192,6 +200,10 @@ p + geom_bar() + coord_polar()
 
 2. What does labs() do? Read the documentation.
 labs() names X- & Y-axis and title.
+```{r}
+p <- ggplot(data=diamonds, aes(cut, fill=clarity))
+p + geom_bar() + coord_polar() + labs(title="A", subtitle="B")
+```
 
 3. What’s the difference between coord_quickmap() and coord_map()?
 coord_map projects a portion of the earth, which is approximately spherical, onto a flat 2D plane using any projection defined by the mapproj package. Map projections do not, in general, preserve straight lines, so this requires considerable computation. coord_quickmap is a quick approximation that does preserve straight lines. It works best for smaller areas closer to the equator.

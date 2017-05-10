@@ -5,7 +5,8 @@ null
 
 ### 3.6.1 Exercises
 
-1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?
+**1. What geom would you use to draw a line chart? A boxplot? A histogram? An area chart?**
+
 
 ```r
 p <- ggplot(data = mpg, aes(x = displ, y = hwy))
@@ -40,9 +41,9 @@ q + geom_histogram()
 ```
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-2-4.png)<!-- -->
-
-2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.
-
+    
+**2. Run this code in your head and predict what the output will look like. Then, run the code in R and check your predictions.** 
+  
 A scatter plot with a line with smooth shape. It is a plot of hwy on displ colored by drv.
 
 ```r
@@ -57,14 +58,14 @@ ggplot(data = mpg, mapping = aes(x = displ, y = hwy, color = drv)) +
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-3-1.png)<!-- -->
 
-3.What does show.legend = FALSE do? What happens if you remove it?
+  
+**3.What does show.legend = FALSE do? What happens if you remove it?**  
+show.legend = FALSE removes the legend not to show unnecessary data in a plot. If it is removed, the regend will be show up.  
+  
+  4.What does the se argument to geom_smooth() do?  
+    
+    geom_smooth(se=TRUE) adds a confidence interval around the line.  
 
-show.legend = FALSE removes the legend not to show unnecessary data in a plot. If it is removed, the regend will be show up.
-
-
-4.What does the se argument to geom_smooth() do?
-
-geom_smooth(se=TRUE) adds a confidence interval around the line.
 
 
 5.Will these two graphs look different? Why/why not?
@@ -192,11 +193,12 @@ ggplot(data = diamonds) +
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-7-2.png)<!-- -->
 for bar charts 
-1) geom_bar: makes the height of the bars proportional to the number of cases in each group, using stat_count by default(counts the number of cases at each x position)
-2) geom_col: makes the heights of the bars to represent values in the data, using stat_identity(leaves the data as is)
+geom_bar: makes the height of the bars proportional to the number of cases in each group, using stat_count by default(counts the number of cases at each x position)
+geom_col: makes the heights of the bars to represent values in the data, using stat_identity(leaves the data as is)
 
 
 3. Most geoms and stats come in pairs that are almost always used in concert. Read through the documentation and make a list of all the pairs. What do they have in common?
+
 
 4. What variables does stat_smooth() compute? What parameters control its behaviour?
 
@@ -249,6 +251,7 @@ ggplot(data = diamonds) +
 
 ### 3.8.1 Exercises
 
+
 1. What is the problem with this plot? How could you improve it?
 
 ```r
@@ -265,8 +268,9 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 ```
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
-geom_jitter () spreads the points out to prevent overplotting.  Overplotting is when one or more points are in the same place (or close enough to the same place).
-Adding randomness improves the plot, especially on large scales rather than small scales.
+
+geom_jitter () spreads the points out to prevent overplotting.  Overplotting is when one or more points are in the same place (or close enough to the same place). Adding randomness improves the plot, especially on large scales rather than small scales.
+ 
  
 2. What parameters to geom_jitter() control the amount of jittering?
 
@@ -276,7 +280,9 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 ```
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-12-1.png)<!-- -->
+
 width and height
+
 
 3. Compare and contrast geom_jitter() with geom_count().
 
@@ -294,6 +300,7 @@ ggplot(data = mpg, mapping = aes(x = cty, y = hwy)) +
 
 ![](Assignment_Kim.Seungmo_05032017_files/figure-html/unnamed-chunk-13-2.png)<!-- -->
 Both are used to help avoid overplotting. geom_jitter() in continuous X & continuous Y and geom_count() in discrete X and discrete Y. 
+
 
 4. What’s the default position adjustment for geom_boxplot()? Create a visualisation of the mpg dataset that demonstrates it.
 
