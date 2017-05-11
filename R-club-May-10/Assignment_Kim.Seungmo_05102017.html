@@ -120,18 +120,11 @@ $(document).ready(function () {
 </div>
 
 
-<p><br />
-</p>
 <div id="exercises" class="section level4">
 <h4>5.2.4 Exercises</h4>
-<p> </p>
-<ol style="list-style-type: decimal">
-<li>Find all flights that<br />
-</li>
-</ol>
-<ol style="list-style-type: lower-alpha">
-<li>Had an arrival delay of two or more hours</li>
-</ol>
+<p><br />
+1. Find all flights that<br />
+a. Had an arrival delay of two or more hours</p>
 <pre class="r"><code>filter(flights, arr_delay &gt;= 2)</code></pre>
 <pre><code>## # A tibble: 127,929 × 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -174,6 +167,24 @@ filter(flights_departed, dest==&quot;IAH&quot; | dest==&quot;HOU&quot;)</code></
 <p><br />
 c. Were operated by United, American, or Delta</p>
 <pre class="r"><code>filter(flights_departed, carrier==&quot;UA&quot; | carrier==&quot;AA&quot; | carrier==&quot;DL&quot;)</code></pre>
+<pre><code>## # A tibble: 137,833 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
+## 1   2013     1     1      517            515         2      830
+## 2   2013     1     1      533            529         4      850
+## 3   2013     1     1      542            540         2      923
+## 4   2013     1     1      554            600        -6      812
+## 5   2013     1     1      554            558        -4      740
+## 6   2013     1     1      558            600        -2      753
+## 7   2013     1     1      558            600        -2      924
+## 8   2013     1     1      558            600        -2      923
+## 9   2013     1     1      559            600        -1      941
+## 10  2013     1     1      559            600        -1      854
+## # ... with 137,823 more rows, and 12 more variables: sched_arr_time &lt;int&gt;,
+## #   arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;, tailnum &lt;chr&gt;,
+## #   origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;, hour &lt;dbl&gt;,
+## #   minute &lt;dbl&gt;, time_hour &lt;dttm&gt;</code></pre>
+<pre class="r"><code>filter(flights_departed, carrier %in% c(&quot;UA&quot;, &quot;AA&quot;, &quot;DL&quot;))</code></pre>
 <pre><code>## # A tibble: 137,833 × 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
 ##    &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;
@@ -355,7 +366,7 @@ Departed between midnight and 6am (inclusive)</p>
 Dep_time, dep_delay, arr_time, arr_delay and air_time</p>
 <p><br />
 4. Why is NA ^ 0 not missing? Why is NA | TRUE not missing? Why is FALSE &amp; NA not missing? Can you figure out the general rule? (NA * 0 is a tricky counterexample!)</p>
-<pre class="r"><code>NA ^ 0 # (anything) ^ 0 always returns 1</code></pre>
+<pre class="r"><code>NA ^ 0 # (any numeric) ^ 0 always returns 1</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>NA | TRUE  # '|' returns TRUE if either is TRUE and FALSE if both are FALSE.</code></pre>
 <pre><code>## [1] TRUE</code></pre>
@@ -656,7 +667,7 @@ London UTC -1</p>
 ## # ... with 336,766 more rows</code></pre>
 <p>dep_delay = dep_time - sched_dep_time</p>
 <p><br />
-4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank().</p>
+4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank(). %&gt;%</p>
 <pre class="r"><code>arrange(flights, min_rank(desc(dep_delay)))</code></pre>
 <pre><code>## # A tibble: 336,776 × 19
 ##     year month   day dep_time sched_dep_time dep_delay arr_time
@@ -682,7 +693,7 @@ London UTC -1</p>
 <pre><code>## Warning in 1:3 + 1:10: longer object length is not a multiple of shorter
 ## object length</code></pre>
 <pre><code>##  [1]  2  4  6  5  7  9  8 10 12 11</code></pre>
-<p>The elements of the small vector are recycled until all elements of the long vector are manipulated by the operator.</p>
+<p>The elements of the smaller vector are recycled until all elements of the longer vector are manipulated by the operator.</p>
 <pre class="r"><code>1:3 + 1:9</code></pre>
 <pre><code>## [1]  2  4  6  5  7  9  8 10 12</code></pre>
 <p><br />

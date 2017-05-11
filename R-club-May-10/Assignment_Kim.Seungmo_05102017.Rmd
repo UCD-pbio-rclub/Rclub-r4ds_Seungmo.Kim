@@ -11,13 +11,13 @@ library(nycflights13)
 library(tidyverse)
 ```
 
-  
-  
 #### 5.2.4 Exercises  
-\
 
-1. Find all flights that
-\
+
+1. Find all flights that  
+  
+  
+
 a. Had an arrival delay of two or more hours
 ```{r}
 filter(flights, arr_delay >= 2)
