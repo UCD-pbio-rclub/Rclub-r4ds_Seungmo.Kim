@@ -33,6 +33,7 @@ filter(flights_departed, dest=="IAH" | dest=="HOU")
 c. Were operated by United, American, or Delta
 ```{r}
 filter(flights_departed, carrier=="UA" | carrier=="AA" | carrier=="DL")
+filter(flights_departed, carrier %in% c("UA", "AA", "DL"))
 ```
 \
 d. Departed in summer (July, August, and September)
@@ -70,6 +71,8 @@ flights_departed[between(flights$month, 7, 9),]
 Departed between midnight and 6am (inclusive)
 ```{r}
 flights_departed[!(between(flights_departed$dep_time, 601, 2359)),]
+flights_departed[!(between(flights_departed$dep_time, 601, 2359)),]
+filter(flight, between(dep_time, 600, 2400))
 ```
 \
 3. How many flights have a missing dep_time? What other variables are missing? What might these rows represent?
@@ -84,7 +87,7 @@ Dep_time, dep_delay, arr_time, arr_delay and air_time
 4. Why is NA ^ 0 not missing? Why is NA | TRUE not missing? Why is FALSE & NA not missing? Can you figure out the general rule? (NA * 0 is a tricky counterexample!)
 
 ```{r}
-NA ^ 0 # (anything) ^ 0 always returns 1
+NA ^ 0 # (any numeric) ^ 0 always returns 1
 ```
 
 ```{r}
@@ -203,7 +206,7 @@ transmute(flights, dep_time, sched_dep_time, dep_delay)
 dep_delay = dep_time - sched_dep_time
 
 \
-4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank().
+4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank(). %>%
 ```{r}
 arrange(flights, min_rank(desc(dep_delay)))
 ```
@@ -214,7 +217,7 @@ min_rank(): gives smallest values the small ranks, equivalent to rank(ties.metho
 ```{r}
 1:3 + 1:10
 ```
-The elements of the small vector are recycled until all elements of the long vector are manipulated by the operator.
+The elements of the smaller vector are recycled until all elements of the longer vector are manipulated by the operator.
 
 ```{r}
 1:3 + 1:9
