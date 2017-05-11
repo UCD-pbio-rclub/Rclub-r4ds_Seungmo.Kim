@@ -1,11 +1,10 @@
 # Ch5. Data Transformation(1)
 
-\
+
   
   
 #### 5.2.4 Exercises  
-
-\ 
+\
 
 1. Find all flights that
 \
@@ -66,6 +65,30 @@ c. Were operated by United, American, or Delta
 
 ```r
 filter(flights_departed, carrier=="UA" | carrier=="AA" | carrier=="DL")
+```
+
+```
+## # A tibble: 137,833 × 19
+##     year month   day dep_time sched_dep_time dep_delay arr_time
+##    <int> <int> <int>    <int>          <int>     <dbl>    <int>
+## 1   2013     1     1      517            515         2      830
+## 2   2013     1     1      533            529         4      850
+## 3   2013     1     1      542            540         2      923
+## 4   2013     1     1      554            600        -6      812
+## 5   2013     1     1      554            558        -4      740
+## 6   2013     1     1      558            600        -2      753
+## 7   2013     1     1      558            600        -2      924
+## 8   2013     1     1      558            600        -2      923
+## 9   2013     1     1      559            600        -1      941
+## 10  2013     1     1      559            600        -1      854
+## # ... with 137,823 more rows, and 12 more variables: sched_arr_time <int>,
+## #   arr_delay <dbl>, carrier <chr>, flight <int>, tailnum <chr>,
+## #   origin <chr>, dest <chr>, air_time <dbl>, distance <dbl>, hour <dbl>,
+## #   minute <dbl>, time_hour <dttm>
+```
+
+```r
+filter(flights_departed, carrier %in% c("UA", "AA", "DL"))
 ```
 
 ```
@@ -311,7 +334,7 @@ Dep_time, dep_delay, arr_time, arr_delay and air_time
 
 
 ```r
-NA ^ 0 # (anything) ^ 0 always returns 1
+NA ^ 0 # (any numeric) ^ 0 always returns 1
 ```
 
 ```
@@ -751,7 +774,7 @@ transmute(flights, dep_time, sched_dep_time, dep_delay)
 dep_delay = dep_time - sched_dep_time
 
 \
-4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank().
+4. Find the 10 most delayed flights using a ranking function. How do you want to handle ties? Carefully read the documentation for min_rank(). %>%
 
 ```r
 arrange(flights, min_rank(desc(dep_delay)))
@@ -793,7 +816,7 @@ min_rank(): gives smallest values the small ranks, equivalent to rank(ties.metho
 ```
 ##  [1]  2  4  6  5  7  9  8 10 12 11
 ```
-The elements of the small vector are recycled until all elements of the long vector are manipulated by the operator.
+The elements of the smaller vector are recycled until all elements of the longer vector are manipulated by the operator.
 
 
 ```r

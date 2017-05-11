@@ -10,12 +10,11 @@ output:
 library(nycflights13)
 library(tidyverse)
 ```
-\
+
   
   
 #### 5.2.4 Exercises  
-
-\ 
+\
 
 1. Find all flights that
 \
@@ -71,8 +70,6 @@ flights_departed[between(flights$month, 7, 9),]
 Departed between midnight and 6am (inclusive)
 ```{r}
 flights_departed[!(between(flights_departed$dep_time, 601, 2359)),]
-flights_departed[!(between(flights_departed$dep_time, 601, 2359)),]
-filter(flight, between(dep_time, 600, 2400))
 ```
 \
 3. How many flights have a missing dep_time? What other variables are missing? What might these rows represent?
