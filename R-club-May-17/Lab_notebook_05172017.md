@@ -867,59 +867,40 @@ delayed %>%
 
 ```r
 not_cancelled %>% 
-  arrange(rank(desc(arr_delay))) %>%
-  select(year:day, tailnum, origin, dest, arr_delay)
+  group_by(tailnum) %>%
+  summarize(freq_on_time = sum(arr_delay == 0), num_flight=n()) %>%
+  mutate(perc_on_time = freq_on_time/num_flight) %>%
+  arrange(rank(perc_on_time))
 ```
 
 ```
-## # A tibble: 327,346 × 7
-##     year month   day tailnum origin  dest arr_delay
-##    <int> <int> <int>   <chr>  <chr> <chr>     <dbl>
-## 1   2013     1     9  N384HA    JFK   HNL      1272
-## 2   2013     6    15  N504MQ    JFK   CMH      1127
-## 3   2013     1    10  N517MQ    EWR   ORD      1109
-## 4   2013     9    20  N338AA    JFK   SFO      1007
-## 5   2013     7    22  N665MQ    JFK   CVG       989
-## 6   2013     4    10  N959DL    JFK   TPA       931
-## 7   2013     3    17  N927DA    LGA   MSP       915
-## 8   2013     7    22  N6716C    LGA   ATL       895
-## 9   2013    12     5  N5DMAA    EWR   MIA       878
-## 10  2013     5     3  N523MQ    EWR   ORD       875
-## # ... with 327,336 more rows
+## # A tibble: 4,037 × 4
+##    tailnum freq_on_time num_flight perc_on_time
+##      <chr>        <int>      <int>        <dbl>
+## 1   D942DN            0          4            0
+## 2   N102UW            0         48            0
+## 3   N103US            0         46            0
+## 4   N104UW            0         46            0
+## 5   N108UW            0         60            0
+## 6   N110UW            0         40            0
+## 7   N11106            0        126            0
+## 8   N11191            0        124            0
+## 9   N111US            0         30            0
+## 10  N112US            0         38            0
+## # ... with 4,027 more rows
 ```
 
 3. What time of day should you fly if you want to avoid delays as much as possible?
 
 
 ```r
-delayed <- filter(not_cancelled, arr_delay > 0) # extract only the delayed flights
-delayed %>%  group_by(hour) %>% summarize(delay_freq=n()) %>% arrange(desc(delay_freq)) # extract the flights by the frequency of delay
+filter(not_cancelled, arr_delay > 0) %>% # extract only the delayed flights
+  group_by(hour) %>% summarize(delay_freq=n()) %>% 
+  arrange(desc(delay_freq)) %>% # extract the flights by the frequency of delay
+  ggplot(aes(hour, delay_freq)) + geom_point()
 ```
 
-```
-## # A tibble: 19 × 2
-##     hour delay_freq
-##    <dbl>      <int>
-## 1     17      11582
-## 2     15      10941
-## 3     18      10232
-## 4     16      10149
-## 5     19      10025
-## 6     14       9001
-## 7      8       8797
-## 8     13       8050
-## 9     20       7996
-## 10     6       7484
-## 11    12       6759
-## 12     9       6745
-## 13     7       6113
-## 14    10       5794
-## 15    21       5507
-## 16    11       5467
-## 17    22       1257
-## 18     5        563
-## 19    23        542
-```
+![](Lab_notebook_05172017_files/figure-html/unnamed-chunk-36-1.png)<!-- -->
 
 
 4. For each destination, compute the total minutes of delay. For each, flight, compute the proportion of the total delay for its destination.
