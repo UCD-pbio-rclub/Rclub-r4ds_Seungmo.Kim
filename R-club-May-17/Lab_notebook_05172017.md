@@ -1021,7 +1021,11 @@ not_cancelled %>%
 7. Find all destinations that are flown by at least two carriers. Use that information to rank the carriers.
 
 ```r
-not_cancelled %>% group_by(dest) %>% summarize(num_carrier = n_distinct(carrier)) %>% filter(num_carrier >=2) %>% arrange(desc(num_carrier))
+not_cancelled %>% 
+  group_by(dest) %>% 
+  summarize(num_carrier = n_distinct(carrier)) %>% 
+  filter(num_carrier >=2) %>% 
+  arrange(desc(num_carrier))
 ```
 
 ```
