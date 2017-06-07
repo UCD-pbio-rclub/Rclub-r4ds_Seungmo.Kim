@@ -11,49 +11,24 @@ library(readr)
 ```
 
 
-```{r}
-read_csv("a,b,c,
-1,2,3,
-4,5,6")
-```
-```{r}
-read_csv("The first line of metadata
-  The second line of metadata
-  x,y,z
-  1,2,3", skip = 2)
-
-read_csv("# A comment I want to skip
-  x,y,z
-  1,2,3", comment = "#") # use comment = "#" to drop all lines that start with #.
-```
-
-```{r}
-read_csv("1,2,3\n4,5,6", col_names = FALSE) # col_names=FALSE not to treat the first row as headings
-read_csv("1,2,3\n4,5,6", col_names = c("x", "y", "z"))
-read_csv("a,b,c\n1,2,.", na = ".")
-```
-
-
 #### 11.2.2 Exercises
 
 1. What function would you use to read a file where fields were separated with “|”?
 
-    read_delim(  ...  delim = "|")
-    delim: single character used to separate fields within a record.
-    read_csv(), read_tsv() and read_csv2() are special cases of the read_delim(). They are useful for
-reading the most common types of rectangular-type(flat) data, comma, tab and ; separated values, respectively.  
+    read_delim("file.name", delim = "|")
+    delim: single character used to separate fields  
+    read_csv(), read_tsv() and read_csv2() are special cases of the read_delim(). They are useful for reading the most common types of rectangular-type(flat) data. comma, tab and ; separated values, respectively.  
 
 2. Apart from file, skip, and comment, what other arguments do read_csv() and read_tsv() have in common?
 
     Many... for example,
-    col_names: TRUE -> the first row of the input will be used as the column names, and will not be included in the data frame. If FALSE, column names will be generated automatically: X1, X2, X3 etc.
-    locale: US-centric as default or create own locale such as time zone, encoding, decimal mark, big mark, and day/month names.
+    col_names=TRUE: the first row of the input for the column names
+    locale: default(US-centric) or create own locale such as time zone, encoding, decimal mark, and day/month names
      
 
 3. What are the most important arguments to read_fwf()?
 
-    It's also very fast to parse, because every field is in the same place in every line. Need to describe the length of every field.
-    col_positions	is important, created by fwf_empty(), fwf_widths() or fwf_positions(). To read in only selected fields, use fwf_positions().  
+    It's also very fast to parse, because every field is in the same place in every line. So col_positions	is important, created by fwf_empty(), fwf_widths() or fwf_positions().  
     
     
 4. Sometimes strings in a CSV file contain commas. To prevent them from causing problems they need to be surrounded by a quoting character, like " or '. By convention, read_csv() assumes that the quoting character will be ", and if you want to change it you’ll need to use read_delim() instead. What arguments do you need to specify to read the following text into a data frame?
@@ -62,7 +37,7 @@ read_csv("x,y\n1,'a,b'")
 # maybe.. intended below
 #  x    y
 #  1  'a,b'
-# But read_csv understand comma as a separator.
+# But read_csv understands comma as a separator.
 read_delim("x|y\n1|'a,b'", delim = "|") # argument _delim_ assigns a single character used to separate fields within a record.
 ```
 
@@ -83,7 +58,7 @@ read_csv("a;b\n1;3") #1x1
 
 1. What are the most important arguments to locale()?
 
-   I think _encoding_ is critical. This affects how the file is read. Default is UTF-8.
+   I think _encoding_ is critical. This affects how the file is read. Default is UTF-8. And decimal_mark is also important.  "," is used as decimal separater in some European countries. 
    
 2. What happens if you try and set decimal_mark and grouping_mark to the same character? 
 ```{r}
@@ -106,22 +81,22 @@ parse_number("123,456.78", locale = locale(grouping_mark = "."))
 3. I didn’t discuss the date_format and time_format options to locale(). What do they do? Construct an example that shows when they might be useful.
 
 ```{r}
-# dt <- "2017-06-30 12:34:19"
+parse_date("05-07-1966", locale = locale(date_format = "%m-%d-%Y"))
 
-# date_format(dt, "%M %D, %Y")
-# , time_format = "%I:%M:%S")
+parse_time("0600am", locale = locale(time_format = "%I%M%p"))
 ```
 
 
 4. If you live outside the US, create a new locale object that encapsulates the settings for the types of file you read most commonly.
 ```{r}
-# parse_date("2016년 6월 30일", "%Y %B %D", locale = locale("kor"))
+# locale construction for Korea
+locale(date_names = "ko", date_format = "%d/%m/%Y", time_format = "%H%M", decimal_mark = ",")
 ```
 
 
 5. What’s the difference between read_csv() and read_csv2()?
 
-    read_csv() reads the comma separated values and read_csv2() uses ; as seprator instead of comma. read_csv2() may be useful in the case of using comma as decimal separator(e.g. Germany)   
+    read_csv() reads the comma(,) separated values and read_csv2() uses semi-colon(;) as separator, instead of comma. read_csv2() can be useful in some European countries, in which comma(,) is used as decimal separator(e.g. Germany)   
     
 6. What are the most common encodings used in Europe? What are the most common encodings used in Asia? Do some googling to find out.
 
