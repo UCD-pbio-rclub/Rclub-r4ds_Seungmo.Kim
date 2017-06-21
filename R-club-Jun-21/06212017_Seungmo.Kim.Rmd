@@ -1,0 +1,138 @@
+---
+title: "06212017_Kim.Seungmo"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r include=FALSE}
+library(tidyverse)
+```
+
+
+12.5.1 Exercises
+
+1. Compare and contrast the fill arguments to spread() and complete().
+
+    _spread(data, ..., fill = NA, ...)_ spreads a key-value pair across multiple columns. If argument fill is set, missing values will be replaced with this value. 
+    _complete(data, ..., fill = list())_ turns implicit missing values into explicit missing values. Argument fill = list() also set a value to replace NA, but by a named list that for each variable supplies single value to use instead of NA.
+
+ 
+
+2. What does the direction argument to fill() do?
+
+    fill() fills missing values in using the previous entry.  Argument .direction = c("down", "up"), in which to fill missing values. Currently either "down" (the default) or "up".
+
+12.6 Case Study
+
+12.6.1 Exercises
+
+1. In this case study I set na.rm = TRUE just to make it easier to check that we had the correct values. Is this reasonable? Think about how missing values are represented in this dataset. Are there implicit missing values? What’s the difference between an NA and zero?
+
+    NA and 0 are totally different.  NA means no data but 0 a measurement(a kind of data!).  How can I find if there are implicit missing values???
+
+
+
+2. What happens if you neglect the mutate() step? (mutate(key = stringr::str_replace(key, "newrel", "new_rel")))
+
+
+```{r}
+who %>%
+  gather(code, value, new_sp_m014:newrel_f65, na.rm = TRUE) %>% 
+  mutate(code = stringr::str_replace(code, "newrel", "new_rel")) %>%
+  separate(code, c("new", "var", "sexage")) %>% 
+  select(-new, -iso2, -iso3) %>% 
+  separate(sexage, c("sex", "age"), sep = 1)
+```
+
+```{r}
+who %>%
+  gather(code, value, new_sp_m014:newrel_f65, na.rm = TRUE) %>% 
+  separate(code, c("new", "var", "sexage")) %>% 
+  select(-new, -iso2, -iso3) %>% 
+  separate(sexage, c("sex", "age"), sep = 1)
+# Some values are missing....
+```
+
+3. I claimed that iso2 and iso3 were redundant with country. Confirm this claim.
+```{r}
+who %>%
+  select(country:iso3) %>%
+  nrow()
+```
+```{r}
+# to retain only distinct rows using unique()
+who %>%
+  select(country:iso3) %>%
+  unique() %>%
+  nrow()
+
+who %>%
+  select(country:iso2) %>%
+  unique() %>%
+  nrow()
+
+who %>%
+  select(country) %>%
+  unique() %>%
+  nrow()
+```
+
+    We conclude country = iso2 = iso3.
+ 
+
+4. For each country, year, and sex compute the total number of cases of TB. Make an informative visualisation of the data.
+```{r}
+who.transformed <- who %>%
+  gather(code, value, new_sp_m014:newrel_f65, na.rm = TRUE) %>% 
+  mutate(code = stringr::str_replace(code, "newrel", "new_rel")) %>%
+  separate(code, c("new", "var", "sexage")) %>% 
+  select(-new, -iso2, -iso3) %>% 
+  separate(sexage, c("sex", "age"), sep = 1)
+```
+
+```{r}
+# to summarize total cases by country, year and sex
+who.cases.by.group <-
+  group_by(who.transformed, country, year, sex) %>% 
+  summarize(num.case = sum(value))   
+```
+```{r} 
+# ?????? need help!
+ggplot(who.cases.by.group, aes(x = year, y = num.case)) +
+  geom_point(aes(fill=country)) +
+  facet_wrap(~sex)
+```
+
+
+13. Relational data
+
+13.1 Introduction
+
+```{r}
+library(nycflights13)
+```
+
+13.2 nycflights13
+
+13.2.1 Exercises
+
+1. Imagine you wanted to draw (approximately) the route each plane flies from its origin to its destination. What variables would you need? What tables would you need to combine?
+
+    faa in table airports    origin and dest in table filghts
+
+2. I forgot to draw the relationship between weather and airports. What is the relationship and how should it appear in the diagram?
+```{r}
+colnames(weather)
+colnames(airports)
+```
+
+    We need to connect faa(for each airport) in airports with origin in weather(e.g. EWR in airports and in weather)
+    
+3. weather only contains information for the origin (NYC) airports. If it contained weather records for all airports in the USA, what additional relation would it define with flights?
+
+     We will be able to check the weather conditions at the time the flight arrive at its destination.
+
+4. We know that some days of the year are “special”, and fewer people than usual fly on them. How might you represent that data as a data frame? What would be the primary keys of that table? How would it connect to the existing tables?
+
+    Special days for someone... We will be able to make a table with the year, month and day, and column of national holidays such as Christmas. The table can be related to flights through the year, month, and day.
