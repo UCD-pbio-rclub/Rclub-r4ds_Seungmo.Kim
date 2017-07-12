@@ -1,0 +1,274 @@
+---
+title: "07122017_Kim.Seungmo"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(nycflights13)
+```
+
+```{r include=FALSE}
+library(tidyverse)
+library(stringr)
+```
+
+```{r}
+double_quote <- "\"" # or '"'
+single_quote <- '\'' # or "'"
+
+x <- c("\"", "\\")
+x
+
+writeLines(x)
+
+x <- "\u00b5"
+x
+
+str_length(c("a", "R for data science", NA))
+```
+```{r}
+str_c("x", "y") # combine strings
+str_c("x", "y", sep = ", ")
+
+x <- c("abc", NA)
+str_c("|-", x, "-|")
+```
+
+```{r}
+name <- "Hadley"
+time_of_day <- "morning"
+birthday <- FALSE
+
+str_c(
+  "Good ", time_of_day, " ", name,
+  if (birthday) " and HAPPY BIRTHDAY",
+  "."
+)
+```
+```{r}
+str_c(c("x", "y", "z"), collapse = ", ") 
+# to collapse a vector of strings into a single string
+```
+
+```{r}
+x <- c("Apple", "Banana", "Pear")
+str_sub(x, 1, 3)
+str_sub(x, -3, -1)
+```
+
+
+```{r}
+str_sub(x, 1, 1)
+str_to_lower(str_sub(x, 1, 1))
+```
+```{r}
+x <- c("apple", "eggplant", "banana")
+str_sort(x, locale = "en")  # English
+```
+
+14.2.5 Exercises
+
+1. In code that doesn’t use stringr, you’ll often see paste() and paste0(). What’s the difference between the two functions? What stringr function are they equivalent to? How do the functions differ in their handling of NA?
+
+paste0(..., collapse) is equivalent to paste(..., sep = "", collapse), slightly more efficiently.
+
+```{r}
+paste0(1:12)
+paste(1:12)        # same
+as.character(1:12) 
+
+paste0(1:6, c("st", "nd", "rd", rep("th", 3)))
+paste(1:6, c("st", "nd", "rd", rep("th", 3)))
+paste(1:6, c("st", "nd", "rd", rep("th", 3)), sep = "")
+```
+```{r}
+str_c(1:9, c("st", "nd", "rd", rep("th", 6)), collapse = " ")
+```
+```{r}
+str_c(1:4, c("st", "nd", "rd", NA))
+paste0(1:4, c("st", "nd", "rd", NA))
+paste0(1:4, c("st", "nd", "rd", "NA"))
+```
+
+2. In your own words, describe the difference between the sep and collapse arguments to str_c().
+```{r}
+str_c(1:4, c("st", "nd", "rd", "th"), collapse = ",")
+str_c(1:4, c("st", "nd", "rd", "th"), sep = ",")
+```
+
+
+3. Use str_length() and str_sub() to extract the middle character from a string. What will you do if the string has an even number of characters?
+```{r}
+strings <- c("abcde", "a6b")
+length <- str_length(strings) 
+str_sub(3)
+str_length(c("a", "bb", "ccc", "dddd", "eeeee")) %>%
+  str_sub()
+str_sub()
+```
+
+
+4. What does str_wrap() do? When might you want to use it?
+
+5. What does str_trim() do? What’s the opposite of str_trim()?
+
+6. Write a function that turns (e.g.) a vector c("a", "b", "c") into the string a, b, and c. Think carefully about what it should do if given a vector of length 0, 1, or 2.
+
+
+Exercise 1
+abc(de)*(fg)*
+
+Exercise 1 1/2
+\D*123\D*
+
+Exercise 2
+...\.
+^(.*)(\.)$
+
+Exercise 3
+[cmf]an
+
+Exercise 4
+[hd]og
+
+Exercise 5
+[ABC][nop][abc]
+^[ABC].[abc]$
+
+Exercise 6
+waz{3,5}up
+
+Exercise 7
+a{2,4}b{0,4}c{1,2}
+aa+b*c+
+
+Exercise 8
+\d+ files* found\?
+\d+\sfiles?\sfound\?
+
+Exercise 9
+[1-3]\.\s+abc
+^[123].*[abc]$
+
+Exercise 10
+^(Mission).*(successful)$
+
+
+Exercise 11
+^(file).*\.pdf$ --> ^(file.*)\.pdf$
+
+Exercise 12
+(\w+ \d+) --> (\w+ (\d+))
+
+Exercise 13
+\d+x\d+ --> (\d+)x(\d+)
+
+Exercise 14
+I love (cats|dogs)
+
+Exercise 15
+.*
+
+Excercise 1
+^-?\d+(,\d+)*(\.*)(\d+e\d+)?\d*$
+
+Exercise 2: Matching Phone Numbers
+1?[\s-]?\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4} -->
+1?[\s-]?\(?(\d{3})\)?[\s-]?\d{3}[\s-]?\d{4}
+ 
+
+Problem 3: Matching emails
+^(\w+\.*\w+)
+^([\w\.]*)
+(\w+\.*\w*)
+
+Exercise 4
+^<(\w+).*
+
+Problem 5: Matching specific filenames
+(\w+)\.(jpg|png|gif)$
+
+Problem 6: Trimming whitespace from start and end of line
+.* --> \s*(.*)
+
+Problem 7: Extracting information from a log file
+
+
+Problem 8: Parsing and extracting data from a URL
+
+
+14.3 Matching patterns with regular expressions
+
+14.3.1 Basic matches
+14.3.5 Grouping and backreferences
+```{r}
+install.packages("htmlwidgets")
+library(htmlwidgets)
+x <- c("apple", "banana", "pear")
+str_view(x, "an", match=TRUE)
+str_view(x, "an", match=FALSE)
+str_view(x, "an")
+
+str_view(x, ".a.")
+```
+```{r}
+str_view(c("abc", "a.c", "bef"), "a\\.c")
+```
+
+```{r}
+fruit
+str_view(fruit, "(..)\\1", match = TRUE)
+# \\1 captures repeated pairs of 2 letters
+str_view(fruit, "(.)\\1", match = TRUE)
+# \\1 captures repeated pairs of a letter
+
+str_view(fruit, "(.)\1\1", match = TRUE)
+str_view(fruit, "(.)(.)\\2\\1", match = TRUE)
+str_view(fruit, "(..)\1", match = TRUE)
+str_view(fruit, "(.).\\1.\\1", match = TRUE)
+str_view(fruit, "(.)(.)(.).*\\3\\2\\1", match = TRUE)
+(.)\1\1
+"(.)(.)\\2\\1"
+(..)\1
+"(.).\\1.\\1"
+"(.)(.)(.).*\\3\\2\\1"
+```
+
+```{r}
+strings <- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+  "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+  "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+  "Home: 543.355.3679")
+phone <- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+
+str_extract(strings, phone)
+str_match(strings, phone)
+
+# Extract/match all
+str_extract_all(strings, phone)
+str_match_all(strings, phone)
+
+x <- c("<a> <b>", "<a> <>", "<a>", "", NA)
+str_match(x, "<(.*?)> <(.*?)>")
+str_match_all(x, "<(.*?)>")
+
+str_extract(x, "<.*?>")
+str_extract_all(x, "<.*?>")
+```
+
+Earlier, you learned about parentheses as a way to disambiguate complex expressions. They also define “groups” that you can refer to with backreferences, like \1, \2 etc. For example, the following regular expression finds all fruits that have a repeated pair of letters.
+```{r}
+str_view(fruit, "(..)\\1", match = TRUE)
+```
+
+ 
+
+
+
+
+
+ 
+
