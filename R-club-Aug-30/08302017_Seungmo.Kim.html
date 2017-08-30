@@ -192,9 +192,9 @@ which(x &gt; 0) </code></pre>
 <pre><code>## [1] 1 4</code></pre>
 <pre class="r"><code>-which(x &gt; 0) </code></pre>
 <pre><code>## [1] -1 -4</code></pre>
-<pre class="r"><code>x[-which(x &gt; 0)] #return all elements except x &gt; 0, including NA</code></pre>
+<pre class="r"><code>x[-which(x &gt; 0)] # return all elements satisfying a given condition by position</code></pre>
 <pre><code>## [1] -3 NA  0</code></pre>
-<pre class="r"><code>x[x &lt;= 0] # should return all elements &lt;= 0, not including NA. But include NA. Why?</code></pre>
+<pre class="r"><code>x[x &lt;= 0] # returns all elements satisfying a given condition by logical judgment</code></pre>
 <pre><code>## [1] -3 NA  0</code></pre>
 <ol start="6" style="list-style-type: decimal">
 <li>What happens when you subset with a positive integer that’s bigger than the length of the vector? What happens when you subset with a name that doesn’t exist?</li>
@@ -203,7 +203,7 @@ which(x &gt; 0) </code></pre>
 x</code></pre>
 <pre><code>## a b c d e 
 ## 1 2 3 4 5</code></pre>
-<pre class="r"><code>x[1:10] # the portion beyond the length is filled with NAs</code></pre>
+<pre class="r"><code>x[1:10] # the portion exceeding the length is filled with NA.</code></pre>
 <pre><code>##    a    b    c    d    e &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; &lt;NA&gt; 
 ##    1    2    3    4    5   NA   NA   NA   NA   NA</code></pre>
 <pre class="r"><code>x[c(&quot;f&quot;, &quot;g&quot;)] # return NAs(missing values)</code></pre>
@@ -227,7 +227,7 @@ gr</code></pre>
 ## 2     2     2
 ## 3     3     1
 ## 4     4     2</code></pre>
-<pre class="r"><code>gr[1]  #??????????</code></pre>
+<pre class="r"><code>gr[1]  </code></pre>
 <pre><code>## # A tibble: 4 × 1
 ##       x
 ##   &lt;int&gt;
@@ -235,6 +235,36 @@ gr</code></pre>
 ## 2     2
 ## 3     3
 ## 4     4</code></pre>
+<pre class="r"><code>fr &lt;- list(list(1, 2), list(3, 4))
+fr</code></pre>
+<pre><code>## [[1]]
+## [[1]][[1]]
+## [1] 1
+## 
+## [[1]][[2]]
+## [1] 2
+## 
+## 
+## [[2]]
+## [[2]][[1]]
+## [1] 3
+## 
+## [[2]][[2]]
+## [1] 4</code></pre>
+<pre class="r"><code>fr[[1]]</code></pre>
+<pre><code>## [[1]]
+## [1] 1
+## 
+## [[2]]
+## [1] 2</code></pre>
+<pre class="r"><code>fr[1]</code></pre>
+<pre><code>## [[1]]
+## [[1]][[1]]
+## [1] 1
+## 
+## [[1]][[2]]
+## [1] 2</code></pre>
+<p>Subsetting a tibble returns elements of rows or columns, and subsetting a list does a list(or lists).</p>
 <p>20.7.4 Exercises</p>
 <ol style="list-style-type: decimal">
 <li>What does hms::hms(3600) return? How does it print? What primitive type is the augmented vector built on top of? What attributes does it use?</li>
@@ -262,6 +292,15 @@ x # 3,600 s = 1 hr</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Based on the definition above, is it ok to have a list as a column of a tibble?</li>
 </ol>
+<pre class="r"><code>x &lt;- tibble(x=1:4, y=list(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;))
+x</code></pre>
+<pre><code>## # A tibble: 4 × 2
+##       x         y
+##   &lt;int&gt;    &lt;list&gt;
+## 1     1 &lt;chr [1]&gt;
+## 2     2 &lt;chr [1]&gt;
+## 3     3 &lt;chr [1]&gt;
+## 4     4 &lt;chr [1]&gt;</code></pre>
 
 
 
