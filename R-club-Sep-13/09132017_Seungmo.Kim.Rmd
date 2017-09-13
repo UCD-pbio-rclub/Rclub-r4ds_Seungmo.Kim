@@ -27,7 +27,6 @@ col_summary <- function(df, fun) {
   out
 }
 col_summary(nycflights13::flights, is.numeric)
-mtcars
 ```
 
 21.5.3 Exercises
