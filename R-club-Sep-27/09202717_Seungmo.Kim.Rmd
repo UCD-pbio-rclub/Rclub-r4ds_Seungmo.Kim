@@ -1,0 +1,130 @@
+---
+title: "09202017_Kim.Seungmo"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r include=FALSE}
+library(tidyverse)
+library(modelr)
+options(na.action = na.warn)
+```
+
+ 
+23.3.3 Exercises
+
+1. Instead of using lm() to fit a straight line, you can use loess() to fit a smooth curve. Repeat the process of model fitting, grid generation, predictions, and visualisation on sim1 using loess() instead of lm(). How does the result compare to geom_smooth()?
+```{r}
+sim1_loess <- loess(y ~ x, data = sim1)
+sim1 %>%
+  add_predictions(sim1_loess) %>%
+    ggplot(aes(x = x)) +
+     geom_point(aes(y = y)) +
+     geom_line(aes(y = pred), colour = "red")
+```
+
+    The loess prediction gives a nonlinear prediction with smooth line.
+    
+```{r}
+pl <- sim1 %>%
+       ggplot(aes(x = x, y = y)) +
+        geom_point() 
+pl +  geom_smooth(colour = "red", se=FALSE) 
+pl +  geom_smooth(method= "lm", se=FALSE, colour = "red") 
+```
+2. add_predictions() is paired with gather_predictions() and spread_predictions(). How do these three functions differ?
+
+    add_prediction adds a single new column, .pred, to the input data. spread_predictions adds one column for each model. gather_prections adds two columns .model and .pred, and repeats the input rows for each model.
+ 
+```{r}
+df <- tibble::data_frame(
+  x = sort(runif(100)),
+  y = 5 * x + 0.5 * x ^ 2 + 3 + rnorm(length(x))
+)
+plot(df)
+
+m1 <- lm(y ~ x, data = df)
+grid <- data.frame(x = seq(0, 1, length = 10))
+grid %>% add_predictions(m1)
+
+m2 <- lm(y ~ poly(x, 2), data = df)
+grid %>% spread_predictions(m1, m2)
+grid %>% gather_predictions(m1, m2)
+
+```
+3. What does geom_ref_line() do? What package does it come from? Why is displaying a reference line in plots showing residuals useful and important?
+
+    geom_ref_line () adds a reference line to the plot.
+    library(modelr)
+    Residuals of good model should be randomly distributed centered at zero, so a reference line at zero is a good way to evaluate if the model is appropriate.
+
+
+4. Why might you want to look at a frequency polygon of absolute residuals? What are the pros and cons compared to looking at the raw residuals?
+
+    The frequency polygon of absolute residuals help us understand the spread of the residuals. This helps us calibrate the quality of the model: how far away are the predictions from the observed values? The average of the residual should always be 0 for good model.
+
+
+23.4.5 Exercises
+
+1. What happens if you repeat the analysis of sim2 using a model without an intercept. What happens to the model equation? What happens to the predictions?
+```{r}
+sim2
+
+sim2_mod <- lm(y ~ x - 1, data=sim2) #remove the intercept term
+summary(sim2_mod)
+
+# predictions
+sim2 %>% 
+  add_predictions(sim2_mod) %>%
+  ggplot(aes(x=x)) +
+  geom_line(aes(y=pred), colour = "red") +
+  geom_point(aes(y=y)) 
+ 
+# residuals
+sim2 %>%
+  add_residuals(sim2_mod) %>%
+  ggplot(aes(x, resid)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  geom_hline(yintercept = 0, colour = "red", linetype = 2, size = 0.5)
+```
+
+2. Use model_matrix() to explore the equations generated for the models I fit to sim3 and sim4. Why is * a good shorthand for interaction?
+```{r}
+sim3
+model_matrix(sim3, y ~ x1 + x2)
+model_matrix(sim3, y ~ x1 * x2)
+```
+
+
+3. Using the basic principles, convert the formulas in the following two models into functions. (Hint: start by converting the categorical variable into 0-1 variables.)
+```{r}
+mod1 <- lm(y ~ x1 + x2, data = sim3)
+mod2 <- lm(y ~ x1 * x2, data = sim3)
+```
+
+
+4. For sim4, which of mod1 and mod2 is better? I think mod2 does a slightly better job at removing patterns, but it’s pretty subtle. Can you come up with a plot to support my claim?
+```{r}
+sim4
+sim4_mod1 <- lm(y ~ x1 + x2, data = sim4)
+summary(sim4_mod1)
+sim4_mod2 <- lm(y ~ x1 * x2, data = sim4)
+summary(sim4_mod2)
+
+plot(sim4_mod1)
+plot(sim4_mod2)
+```
+
+    **Residuals vs Fitted plot**: shows the residual errors plotted versus their fitted values. The residuals should be randomly distributed around the horizontal line representing a residual error of zero; that is, there should not be a distinct trend in the distribution of points. 
+    **Normal Q-Q plot**: suggests that the residual errors are normally distributed. 
+    **scale-location plot**: shows the square root of the standardized residuals (sort of a square root of relative error) as a function of the fitted values. Again, there should be no obvious trend in this plot.
+    **Residuals vs Leverage plot**: shows each points leverage, which is a measure of its importance in determining the regression result. Superimposed on the plot are contour lines for the Cook’s distance, which is another measure of the importance of each observation to the regression. Smaller distances means that removing the observation has little affect on the regression results. Distances larger than 1 are suspicious and suggest the presence of a possible outlier or a poor model. 
+    Both models are fairly acceptable.  mod2 would be a little better than mod1.
+    
+    
+    
+    
+
+
